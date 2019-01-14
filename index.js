@@ -1,19 +1,38 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const express = require('express');
+const app = express();
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+app.set('view engine', 'ejs');
+
+app.use(express.static('./public'));
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.render('chatroom');
 });
 
+let users = [];
+
 io.on('connection', function(socket) {
-  console.log('a user connected');
-  socket.on('chat message', function(msg) {
-    io.emit('chat message', msg);
-    console.log('message: ' + msg);
+
+  socket.on('add user', (username) => {
+    socket.username = username;
+    users.push(username);
+    io.emit('user list', users);
+    io.emit('chat message', '- ' + socket.username + ' has joined GitChatApp -');
   });
+
+  socket.on('chat message', function(msg) {
+    let currentdate = new Date();
+    let time = currentdate.getHours() + ':' + currentdate.getMinutes();
+    io.emit('chat message', `${socket.username} [${time}]: ${msg}`);
+  });
+
   socket.on('disconnect', function() {
-    console.log('user disconnected');
+    users = users.filter(user => user !== socket.username);
+    io.emit('user list', users);
+    io.emit('chat message', '- ' + socket.username + ' has left GitChatApp -');
   });
 });
 
