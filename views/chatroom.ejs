@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to GitChatApp</h1>
+      <div id="chatroom">
+        <ul id="messages"></ul>
+      </div>
+      <div id="userlist">
+        <h2>Users</h2>
+        <ul id="users"></ul>
+      </div>
+      <form action="">
+        <input id="m" autocomplete="off" />
+        <button>Send</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function() {
+        var socket = io();
+
+        var username = prompt('Please enter a username');
+        socket.emit('add user', username);
+
+        $('form').submit(function(e) {
+          e.preventDefault();
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+
+        socket.on('chat message', function(msg) {
+          $('#messages').append($('<li>').text(msg));
+          let div = $('#chatroom');
+          div.scrollTop(div.prop('scrollHeight'));
+        });
+
+        socket.on('user list', function(arr) {
+          $('#users').empty();
+          for (let i = 0; i < arr.length; i++) {
+            $('#users').append($('<li>').text(arr[i]));
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body { 
+  background-color: white;
+  font-family: sans-serif;
+}
+
+.container {
+  background-color: limegreen;
+  border-radius: 5px;
+  display: grid;
+  margin: 20px auto;
+  max-width: 900px;
+  width: 90%;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 8fr 1fr;
+  grid-template-areas: "header header"
+                       "chatroom users"
+                       "form form";
+}
+
+.container h1 {
+  color: white;
+  font-size: 20px;
+  grid-area: header;
+  padding: 20px;
+}
+
+.container form {
+  font-size: 20px;
+  grid-area: form;
+  padding: 10px;
+  text-align: center;
+}
+
+.container form input {
+  border: 0; 
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px; 
+  width: 70%;
+}
+
+.container form button { 
+  background: yellow; 
+  border: 0;
+  border-radius: 5px;
+  color: green;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px;
+  width: 20%; 
+}
+
+.container #chatroom { 
+  background-color: white;
+  border-right: 10px solid #eee;
+  grid-area: chatroom;
+  height: 500px;
+  margin-left: 10px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+.container #messages {
+  list-style-type: none;
+}
+
+.container #messages li { 
+  padding: 10px 0px;
+}
+
+.container #userlist {
+  background-color: white;
+  grid-area: users;
+  height: 500px;
+  margin-right: 10px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+.container #userlist h2 {
+  font-size: 16px;
+  padding: 5px 0px;
+}
+
+.container #users li { 
+  padding: 5px 0px;
+}
